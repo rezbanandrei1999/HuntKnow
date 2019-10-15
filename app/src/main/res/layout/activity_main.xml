@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#004B86"
     tools:context=".MainActivity">
 
     <Button
@@ -16,6 +17,7 @@
         android:layout_marginEnd="125dp"
         android:layout_marginRight="125dp"
         android:layout_marginBottom="38dp"
+        android:background="#2196F3"
         android:text="Scan QR"
         app:layout_constraintBottom_toTopOf="@+id/open_leaderboard"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +34,7 @@
         android:layout_marginEnd="125dp"
         android:layout_marginRight="125dp"
         android:layout_marginBottom="60dp"
+        android:background="#2196F3"
         android:text="Locations"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +51,7 @@
         android:layout_marginEnd="125dp"
         android:layout_marginRight="125dp"
         android:layout_marginBottom="38dp"
+        android:background="#2196F3"
         android:text="Scores"
         app:layout_constraintBottom_toTopOf="@+id/open_location"
         app:layout_constraintEnd_toEndOf="parent"
