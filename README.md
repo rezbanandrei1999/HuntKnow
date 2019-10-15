@@ -7,6 +7,7 @@ Fiecare user incepe cu un test de 5..10 intrebari cultura generala. In functie d
 3. Pagina de Scan va contine un cititor de cod QR
 4. Pagina de Locations va contine checkpoint-urile vizitate ( verde ) si urmatorul checkpoint ( rosu )
 5. Pagina de leaderboard va contine clasamentul echipelor ce joaca    
+   
    User:
 6. Admin - automatizat - porneste jocul - trimite locatii in functie de userii normali - trimite mesaj castigatorului
 7. Normal - citeste cod qr - raspunde la intrebari - verifica leaderboard
