@@ -7,20 +7,36 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/open_quiz"
+        android:id="@+id/open_scan"
         android:layout_width="160dp"
         android:layout_height="51dp"
         android:layout_marginStart="125dp"
         android:layout_marginLeft="125dp"
-        android:layout_marginTop="448dp"
-        android:layout_marginEnd="126dp"
-        android:layout_marginRight="126dp"
-        android:layout_marginBottom="25dp"
-        android:text="Start"
+        android:layout_marginTop="456dp"
+        android:layout_marginEnd="125dp"
+        android:layout_marginRight="125dp"
+        android:layout_marginBottom="38dp"
+        android:text="Scan QR"
         app:layout_constraintBottom_toTopOf="@+id/open_leaderboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/open_location"
+        android:layout_width="160dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginLeft="125dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="125dp"
+        android:layout_marginRight="125dp"
+        android:layout_marginBottom="60dp"
+        android:text="Locations"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/open_leaderboard" />
 
     <Button
         android:id="@+id/open_leaderboard"
@@ -28,14 +44,14 @@
         android:layout_height="51dp"
         android:layout_marginStart="125dp"
         android:layout_marginLeft="125dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="126dp"
-        android:layout_marginRight="126dp"
-        android:layout_marginBottom="156dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="125dp"
+        android:layout_marginRight="125dp"
+        android:layout_marginBottom="38dp"
         android:text="Scores"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/open_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/open_quiz" />
+        app:layout_constraintTop_toBottomOf="@+id/open_scan" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

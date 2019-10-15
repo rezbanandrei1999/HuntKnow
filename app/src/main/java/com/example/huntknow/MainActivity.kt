@@ -3,9 +3,7 @@ package com.example.huntknow
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-import kotlinx.android.synthetic.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,16 +11,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val openquiz = findViewById<Button>(R.id.open_quiz)
-        openquiz.setOnClickListener {
-            val intent = Intent(this, QuizActivity::class.java)
+        val openScan = findViewById<Button>(R.id.open_scan)
+        openScan.setOnClickListener {
+            val intent = Intent(this, ScanActivity::class.java)
             startActivity(intent)
         }
-        val openleaderboard : Button = findViewById(R.id.open_leaderboard)
-        openleaderboard.setOnClickListener {
+        val openLeaderboard : Button = findViewById(R.id.open_leaderboard)
+        openLeaderboard.setOnClickListener {
             val intent = Intent(this, LeaderboardActivity::class.java)
             startActivity(intent)
         }
+
+        val openLocation : Button = findViewById(R.id.open_location)
+        openLocation.setOnClickListener {
+            val intent = Intent(this, LocationActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 }
