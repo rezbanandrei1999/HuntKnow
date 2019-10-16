@@ -12,8 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ScanActivity"></activity>
-        <activity android:name=".Main3Activity" />
-        <activity android:name=".Main2Activity" />
         <activity android:name=".LeaderboardActivity" />
         <activity android:name=".QuizActivity" />
         <activity android:name=".MainActivity">
