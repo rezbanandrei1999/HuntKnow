@@ -34,6 +34,18 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+        val openHome : Button = findViewById(R.id.open_home)
+        openHome.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        val openLogin : Button = findViewById(R.id.open_login)
+        openLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }
 

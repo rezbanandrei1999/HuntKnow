@@ -14,3 +14,11 @@ nevoit sa treaca prin toate inainte de locatia de final, comuna pentru toti user
    User:
 6. Admin - automatizat - porneste jocul - trimite locatii in functie de userii normali - trimite mesaj castigatorului
 7. Normal - citeste cod qr - raspunde la intrebari - verifica leaderboard
+
+
+
+Coduri QR:
+
+- generate inainte de concurs
+- asignate aleator la 10 intrebari la inceputul concursului (hardcodat)
+
