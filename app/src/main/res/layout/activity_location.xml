@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#004B86"
-    tools:context=".QuizActivity">
+    tools:context=".LocationActivity">
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="110dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="146dp"
-        android:layout_marginLeft="146dp"
+        android:id="@+id/textView2"
+        android:layout_width="146dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="133dp"
+        android:layout_marginLeft="133dp"
         android:layout_marginTop="352dp"
-        android:layout_marginEnd="147dp"
-        android:layout_marginRight="147dp"
+        android:layout_marginEnd="133dp"
+        android:layout_marginRight="133dp"
         android:layout_marginBottom="352dp"
-        android:text="WE ARE IN QUIZ"
+        android:text="LOCATION"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
