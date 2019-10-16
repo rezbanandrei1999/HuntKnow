@@ -14,15 +14,3 @@ nevoit sa treaca prin toate inainte de locatia de final, comuna pentru toti user
    User:
 6. Admin - automatizat - porneste jocul - trimite locatii in functie de userii normali - trimite mesaj castigatorului
 7. Normal - citeste cod qr - raspunde la intrebari - verifica leaderboard
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ScanActivity">
-    <SurfaceView
-        android:id="@+id/surfaceQRScanner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
