@@ -8,6 +8,25 @@
     android:background="#004B86"
     tools:context=".HomeActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qrResultSentence"
+        app:layout_constraintEnd_toStartOf="@+id/qrResultTest"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/qrResultTest"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/qrResultTest"
+        app:layout_constraintBottom_toTopOf="@+id/open_scan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <Button
         android:id="@+id/open_scan"
         android:layout_width="160dp"
