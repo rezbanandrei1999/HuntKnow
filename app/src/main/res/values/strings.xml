@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Hunt&amp;Know</string>
+    <string name="doneScan"> Done</string>
+    <string name="qrResultSentence">QR Result:</string>
+
+
 </resources>
