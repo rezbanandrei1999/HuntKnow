@@ -49,4 +49,12 @@
         app:layout_constraintStart_toStartOf="@+id/variant_b"
         tools:layout_editor_absoluteY="447dp" />
 
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        tools:layout_editor_absoluteX="172dp"
+        tools:layout_editor_absoluteY="712dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

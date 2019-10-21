@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "449099214805-pdgve4enagkp9eom48ot2hel70r05c2u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.huntknow",
+            "certificate_hash": "7fabd09ca544f0182caea13d1f10f32445501af9"
+          }
+        },
+        {
           "client_id": "449099214805-g8tlekt10kf48rueic2r4681ucun6ohg.apps.googleusercontent.com",
           "client_type": 3
         }
