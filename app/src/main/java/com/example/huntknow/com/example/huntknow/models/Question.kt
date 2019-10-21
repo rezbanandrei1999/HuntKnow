@@ -7,14 +7,15 @@ import java.util.HashMap
 // [START post_class]
 @IgnoreExtraProperties
 data class Question (
-    val question: String = "",
-    val qr_group: String = "",
-    val variant_a: String = "",
-    val variant_b: String = "",
-    val variant_c: String = "",
-    val variant_d: String = "",
-    val correct: String = ""
+    val question: String ="",
+    val qr_group: String ="",
+    val variant_a: String ="",
+    val variant_b: String ="",
+    val variant_c: String ="",
+    val variant_d: String ="",
+    val correct: String =""
 ) {
+
 
     @Exclude
     fun toMap(): Map<String, Any?> {

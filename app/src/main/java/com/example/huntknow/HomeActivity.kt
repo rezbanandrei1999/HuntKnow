@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
 
         val goToQRScan: Button = findViewById(R.id.open_scan)
         goToQRScan.setOnClickListener {
-            val intent = Intent(this, ScanActivity::class.java)
+            val intent = Intent(this, QuizActivity::class.java)
             startActivity(intent)
         }
         val openLeaderboard: Button = findViewById(R.id.open_leaderboard)
