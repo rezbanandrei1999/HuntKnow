@@ -5,6 +5,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import android.util.Log
+import android.widget.Toast
+import com.example.huntknow.com.example.huntknow.models.Question
+import com.google.firebase.database.*
+
 
 class QuizActivity : AppCompatActivity() {
 
@@ -14,6 +19,13 @@ class QuizActivity : AppCompatActivity() {
     lateinit var variantC : CheckBox
     lateinit var variantD : CheckBox
     lateinit var submit : Button
+
+    private lateinit var questionReference: DatabaseReference
+
+    private var questionListener: ValueEventListener? = null
+
+    private val quiz: MutableList<Question> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
