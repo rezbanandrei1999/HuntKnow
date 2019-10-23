@@ -9,12 +9,17 @@ import android.os.Bundle
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.huntknow.com.example.huntknow.models.Question
+import com.example.huntknow.com.example.huntknow.models.User
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class ScanActivity : AppCompatActivity() {
 
@@ -27,7 +32,7 @@ class ScanActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
-
+        val context=this
         surfaceScan = findViewById(R.id.surfaceQRScanner)
         scanResText = findViewById((R.id.qrResult))
         qrDetector = BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.QR_CODE).build()
@@ -52,8 +57,28 @@ class ScanActivity : AppCompatActivity() {
                         scanResText.text = barcodes.valueAt(0).displayValue
                         index+=1
 
-                        if(scanResText.text!=null && index==1)
-                        goToQuizActivityWithResult()
+                        if(scanResText.text!=null && index==1) {
+                            var userList : MutableList<User> = mutableListOf()
+                            var ref: DatabaseReference =
+                                FirebaseDatabase.getInstance().getReference("users")
+                            ref.addValueEventListener(object :ValueEventListener{
+                                override fun onCancelled(p0: DatabaseError) {
+
+                                }
+
+                                override fun onDataChange(p0: DataSnapshot) {
+                                    p0.children.mapNotNullTo(userList) {
+                                        it.getValue<User>(User::class.java)
+                                    }
+                                    var currentUser =FirebaseAuth.getInstance().currentUser!!.getUid()
+                                    var curr_qr = userList.single{user -> user.uid== currentUser}.current_qr
+                                    if(curr_qr==scanResText.text)
+                                        goToQuizActivityWithResult()
+                                    else
+                                        Toast.makeText(context, "Incorrect QR", Toast.LENGTH_LONG).show()
+                                }
+                            })
+                        }
                     }
                 }
             }
@@ -89,7 +114,6 @@ class ScanActivity : AppCompatActivity() {
                 cameraSource.stop()
             }
         })
-
         }
     //
     @SuppressLint("MissingPermission")
