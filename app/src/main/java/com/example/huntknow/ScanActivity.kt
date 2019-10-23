@@ -37,8 +37,8 @@ class ScanActivity : AppCompatActivity() {
         if(!qrDetector.isOperational()){
             this.finish()
         }
-        fun goToHomeActivityWithResult(){
-            intent = Intent(this, HomeActivity::class.java)
+        fun goToQuizActivityWithResult(){
+            intent = Intent(this, QuizActivity::class.java)
             intent.putExtra("qrResult",scanResText.text)
             startActivity(intent)
         }
@@ -56,7 +56,7 @@ class ScanActivity : AppCompatActivity() {
                         index+=1
 
                         if(scanResText.text!=null && index==1)
-                        goToHomeActivityWithResult()
+                        goToQuizActivityWithResult()
                     }
                 }
             }

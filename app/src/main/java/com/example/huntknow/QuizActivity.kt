@@ -2,68 +2,85 @@ package com.example.huntknow
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
+import android.os.CountDownTimer
 import android.widget.TextView
 import com.example.huntknow.com.example.huntknow.models.Question
 import com.google.firebase.database.*
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
+import com.example.huntknow.ui.main.SectionsPagerAdapter
+import java.util.concurrent.TimeUnit
 
 
 class QuizActivity : AppCompatActivity() {
 
-    lateinit var quiz: MutableList<Question>
-    lateinit var questionText : TextView
-    lateinit var variantA : CheckBox
-    lateinit var variantB : CheckBox
-    lateinit var variantC : CheckBox
-    lateinit var variantD : CheckBox
-    lateinit var submit : Button
+    var quiz: MutableList<Question> = mutableListOf()
+
     lateinit var ref : DatabaseReference
+    lateinit var quiz_timer : TextView
+    var time_spent = 60*1000
+    val timerForQuizActivity = object: CountDownTimer(time_spent.toLong(), 1000){
+        override fun onFinish() {
+            // finish game
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+            quiz_timer.setText(String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))))
+            time_spent -=1000
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
-        quiz = mutableListOf()
-        ref = FirebaseDatabase.getInstance().getReference("questions")
-        questionText = findViewById(R.id.question)
-        variantA = findViewById(R.id.variant_a)
-        variantB = findViewById(R.id.variant_b)
-        variantC = findViewById(R.id.variant_c)
-        variantD = findViewById(R.id.variant_d)
-        submit = findViewById(R.id.submit)
-
-        submit.setOnClickListener{
-
-            submitAnswer()
+        val qrCode: String?
+        if (savedInstanceState == null) {
+            val extras = intent.extras
+            if (extras == null) {
+                qrCode = null
+            } else {
+                qrCode = extras.getString("qrResult")
+            }
+        } else {
+            qrCode = savedInstanceState.getSerializable("qrResult") as String
         }
 
+        ref = FirebaseDatabase.getInstance().getReference("questions")
+
+        val context = this
         ref.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.mapNotNullTo(quiz) {
                     it.getValue<Question>(Question::class.java)
                 }
 
+                val iterator = quiz.listIterator()
+                var aux : MutableList<Question> = mutableListOf()
+                for(question in iterator)
+                    if(question.qr_group == qrCode)
+                        aux.add(question)
+                quiz = aux
+                quiz_timer = findViewById(R.id.quizTimer)
 
+                timerForQuizActivity.start()
+                val sectionsPagerAdapter = SectionsPagerAdapter(context, supportFragmentManager, quiz)
+                val viewPager: ViewPager = findViewById(R.id.view_pager)
+                viewPager.adapter = sectionsPagerAdapter
+                val tabs: TabLayout = findViewById(R.id.slidingTabs)
+                tabs.setupWithViewPager(viewPager)
 
-                questionText.text = quiz.first().question
-                variantA.text = quiz.first().variant_a
-                variantB.text = quiz.first().variant_b
-                variantC.text = quiz.first().variant_c
-                variantD.text = quiz.first().variant_d
 
             }
 
-            override fun onCancelled(p0: DatabaseError) {
-
-
-            }
-
+            override fun onCancelled(p0: DatabaseError) {}
         })
 
 
     }
     private fun submitAnswer()
-    {
-
-    }
+    {}
 }

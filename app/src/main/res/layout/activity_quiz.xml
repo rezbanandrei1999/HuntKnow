@@ -1,88 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#004B86"
     tools:context=".QuizActivity">
 
-    <TextView
-        android:id="@+id/question"
-        android:layout_width="341dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="193dp"
-        android:layout_marginBottom="107dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/variant_a"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/variant_b"
-        android:layout_width="189dp"
-        android:layout_height="29dp"
-        android:layout_marginEnd="227dp"
-        android:layout_marginRight="227dp"
-        android:text="CheckBox"
-        app:layout_constraintBottom_toTopOf="@+id/variant_c"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/variant_a"
-        app:layout_constraintTop_toBottomOf="@+id/variant_a" />
-
-    <CheckBox
-        android:id="@+id/variant_d"
-        android:layout_width="189dp"
-        android:layout_height="29dp"
-        android:layout_marginEnd="227dp"
-        android:layout_marginRight="227dp"
-        android:layout_marginBottom="206dp"
-        android:text="CheckBox"
-        app:layout_constraintBottom_toTopOf="@+id/submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/variant_c"
-        app:layout_constraintTop_toBottomOf="@+id/variant_c" />
-
-    <CheckBox
-        android:id="@+id/variant_a"
-        android:layout_width="189dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="107dp"
-        android:layout_marginEnd="227dp"
-        android:layout_marginRight="227dp"
-        android:text="CheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/question" />
-
-    <CheckBox
-        android:id="@+id/variant_c"
-        android:layout_width="189dp"
-        android:layout_height="29dp"
-        android:layout_marginEnd="227dp"
-        android:layout_marginRight="227dp"
-        android:text="CheckBox"
-        app:layout_constraintBottom_toTopOf="@+id/variant_d"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/variant_b"
-        app:layout_constraintTop_toBottomOf="@+id/variant_b" />
-
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginLeft="172dp"
-        android:layout_marginEnd="172dp"
-        android:layout_marginRight="172dp"
-        android:layout_marginBottom="104dp"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:id="@+id/questionNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0/10"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+            <TextView
+                android:id="@+id/quizTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1:00"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/slidingTabs"
+            app:tabMode="scrollable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -26,21 +26,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val setQrResult : TextView = findViewById(R.id.qrResultTest)
-
-        var getScanResult: String
-
-        val intent = intent
-        val bundle = intent.extras
-
-        if (bundle != null) {
-            getScanResult = bundle.getString("qrResult")!!
-            setQrResult.text=getScanResult.toString()
-        }
 
         val goToQRScan: Button = findViewById(R.id.open_scan)
         goToQRScan.setOnClickListener {
-            val intent = Intent(this, QuizActivity::class.java)
+            val intent = Intent(this, ScanActivity::class.java)
             startActivity(intent)
         }
         val openLeaderboard: Button = findViewById(R.id.open_leaderboard)
