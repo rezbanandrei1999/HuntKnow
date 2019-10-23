@@ -24,7 +24,7 @@ class ScanActivity : AppCompatActivity() {
     private lateinit var scanResText: TextView
     private lateinit var qrDetector: BarcodeDetector
     private lateinit var cameraSource: CameraSource
-    private var index=0;
+    private var index=0
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -37,7 +37,7 @@ class ScanActivity : AppCompatActivity() {
         if(!qrDetector.isOperational()){
             this.finish()
         }
-        fun goToHomeActivityWithResult(){
+        fun goToQuizActivityWithResult(){
             intent = Intent(this, QuizActivity::class.java)
             intent.putExtra("qrResult",scanResText.text)
             startActivity(intent)
@@ -56,7 +56,7 @@ class ScanActivity : AppCompatActivity() {
                         index+=1
 
                         if(scanResText.text!=null && index==1)
-                        goToHomeActivityWithResult()
+                        goToQuizActivityWithResult()
                     }
                 }
             }
