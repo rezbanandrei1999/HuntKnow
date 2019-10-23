@@ -64,6 +64,7 @@ class QuizActivity : AppCompatActivity() {
                     if(question.qr_group == qrCode)
                         aux.add(question)
                 quiz = aux
+                quiz.shuffle()
                 quiz_timer = findViewById(R.id.quizTimer)
 
                 timerForQuizActivity.start()

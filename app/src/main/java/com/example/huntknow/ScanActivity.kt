@@ -52,7 +52,6 @@ class ScanActivity : AppCompatActivity() {
                 if (barcodes!!.size() > 0) {
                     scanResText.post {
                         scanResText.text = barcodes.valueAt(0).displayValue
-                        Toast.makeText(getApplicationContext(),scanResText.text,Toast.LENGTH_SHORT).show();
                         index+=1
 
                         if(scanResText.text!=null && index==1)
