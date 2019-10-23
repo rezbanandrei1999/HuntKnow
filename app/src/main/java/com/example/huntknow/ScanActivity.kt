@@ -9,8 +9,6 @@ import android.os.Bundle
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.TextView
-import android.widget.Toast
-
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.vision.CameraSource
