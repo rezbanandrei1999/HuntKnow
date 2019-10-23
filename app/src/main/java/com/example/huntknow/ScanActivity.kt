@@ -38,7 +38,7 @@ class ScanActivity : AppCompatActivity() {
             this.finish()
         }
         fun goToHomeActivityWithResult(){
-            intent = Intent(this, HomeActivity::class.java)
+            intent = Intent(this, QuizActivity::class.java)
             intent.putExtra("qrResult",scanResText.text)
             startActivity(intent)
         }

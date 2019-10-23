@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">Hunt&amp;Know</string>
     <string name="doneScan"> Done</string>
-    <string name="qrResultSentence">QR Result:</string>
+    <string name="qrResultSpecifier">QR Result:</string>
+    <string name="scanQRButton">Scan QR</string>
+    <string name="leaderboardButton">Open Leaderboard</string>
+    <string name="locationsButton">Open Locations</string>
+    <string name="signOutButton">Sign Out</string>
+    <string name="leaderboardTitle">Leaderboard:</string>
+    <string name="locationBoard">Game Locations:</string>
+
 
 
 </resources>
