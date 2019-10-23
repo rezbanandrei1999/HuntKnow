@@ -39,7 +39,6 @@ class QuizActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
-
         val qrCode: String?
         if (savedInstanceState == null) {
             val extras = intent.extras
