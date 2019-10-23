@@ -2,6 +2,7 @@ package com.example.huntknow
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import android.os.CountDownTimer
 import android.widget.TextView
 import com.example.huntknow.com.example.huntknow.models.Question
@@ -34,8 +35,11 @@ class QuizActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
+        val setQrResult : TextView = findViewById(R.id.qrResultTest)
+
 
         val qrCode: String?
         if (savedInstanceState == null) {

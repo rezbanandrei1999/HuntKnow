@@ -27,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
 
+
         val goToQRScan: Button = findViewById(R.id.open_scan)
         goToQRScan.setOnClickListener {
             val intent = Intent(this, ScanActivity::class.java)
