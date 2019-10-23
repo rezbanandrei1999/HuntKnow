@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.os.CountDownTimer
-import android.widget.TextView
 import com.example.huntknow.com.example.huntknow.models.Question
 import com.google.firebase.database.*
 import com.google.android.material.tabs.TabLayout
@@ -38,8 +37,6 @@ class QuizActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
-        val setQrResult : TextView = findViewById(R.id.qrResultTest)
-
 
         val qrCode: String?
         if (savedInstanceState == null) {

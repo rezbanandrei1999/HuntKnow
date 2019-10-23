@@ -14,6 +14,9 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.database.FirebaseDatabase
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,6 +49,16 @@ class MainActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
+
+                val user = firebaseAuth.currentUser!!
+
+                val userId = user.getUid()
+                val mRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
+
+                mRef.child("qr_current").setValue("abcd")
+                mRef.child("visited_places").setValue(0)
+                mRef.child("uid").setValue(userId)
+
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
             } else {
