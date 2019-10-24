@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 
-class PageViewModel : ViewModel() {
+class QuestionView : ViewModel() {
 
 
     private val _question = MutableLiveData<String>()
@@ -14,6 +13,8 @@ class PageViewModel : ViewModel() {
     private val _variantB = MutableLiveData<String>()
     private val _variantC = MutableLiveData<String>()
     private val _variantD = MutableLiveData<String>()
+    private val _answer = MutableLiveData<String>()
+
     val questionText: LiveData<String> = Transformations.map(_question) {
         it
     }
@@ -27,6 +28,9 @@ class PageViewModel : ViewModel() {
         it
     }
     val variantDText: LiveData<String> = Transformations.map(_variantD) {
+        it
+    }
+    val answerText: LiveData<String> = Transformations.map(_answer) {
         it
     }
 
@@ -51,5 +55,10 @@ class PageViewModel : ViewModel() {
     {
         _variantD.value = variantD
     }
+    fun setAnswer(answer: String)
+    {
+        _answer.value = answer
+    }
+
 
 }

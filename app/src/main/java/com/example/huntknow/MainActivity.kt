@@ -13,10 +13,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.firebase.database.FirebaseDatabase
-
-
+import com.google.firebase.database.ValueEventListener
+import com.example.huntknow.GlobalVariables.Companion.qrList
+import com.example.huntknow.com.example.huntknow.models.QrCode
+import com.google.firebase.database.DatabaseError
+import com.google.zxing.qrcode.encoder.QRCode
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,8 +56,25 @@ class MainActivity : AppCompatActivity() {
 
                 val user = firebaseAuth.currentUser!!
 
-                val userId = user.getUid()
+                val userId = user.uid
                 val mRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
+                val qRef = FirebaseDatabase.getInstance().getReference("qr_codes")
+                qRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(p0: DataSnapshot) {
+                        p0.children.mapNotNullTo(qrList) {
+                            it.getValue<QrCode>(QrCode::class.java)
+                        }
+
+                        val iterator = qrList.listIterator()
+                        var aux: MutableList<QrCode> = mutableListOf()
+                        for (qr in iterator)
+                            if (qr.is_final == false)
+                                aux.add(qr)
+                        qrList = aux
+                        qrList.shuffle()
+                    }
+                    override fun onCancelled(p0: DatabaseError) {}
+                })
 
                 mRef.child("qr_current").setValue("abcd")
                 mRef.child("visited_places").setValue(0)
