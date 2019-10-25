@@ -124,7 +124,7 @@ class QuizActivity : AppCompatActivity() {
 
                 }
             })
-            if(qrList.size == 0)
+            if(qrList.isEmpty())
             {
                 val qRef = FirebaseDatabase.getInstance().getReference("qr_codes")
                 qRef.addValueEventListener(object : ValueEventListener {
@@ -144,7 +144,7 @@ class QuizActivity : AppCompatActivity() {
                     override fun onCancelled(p0: DatabaseError) {}
                 })
             }
-            childRef.child("qr_current").setValue(qrList.first().code_qr)
+            childRef.child("qr_current").setValue(qrList.first().qr_code)
             childRef.child("visited_places").setValue(aux + 1)
             childRef.child("uid").setValue(userId)
 

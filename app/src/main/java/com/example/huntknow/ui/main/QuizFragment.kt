@@ -127,8 +127,8 @@ class QuizFragment : Fragment() {
         when(correct){
             "A" -> variantA.setTextColor(Color.RED)
             "B" -> variantB.setTextColor(Color.RED)
-            "C" -> variantB.setTextColor(Color.RED)
-            "D" -> variantB.setTextColor(Color.RED)
+            "C" -> variantC.setTextColor(Color.RED)
+            "D" -> variantD.setTextColor(Color.RED)
         }
     }
 

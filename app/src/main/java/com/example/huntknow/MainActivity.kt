@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                         val iterator = qrList.listIterator()
                         var aux: MutableList<QrCode> = mutableListOf()
                         for (qr in iterator)
-                            if (qr.is_final == false)
+                            if (!qr.is_final)
                                 aux.add(qr)
                         qrList = aux
                         qrList.shuffle()
