@@ -1,7 +1,7 @@
 package com.example.huntknow
 
 import android.app.Application
-import com.example.huntknow.com.example.huntknow.models.QrCode
+import com.example.huntknow.models.QrCode
 
 class GlobalVariables: Application() {
 

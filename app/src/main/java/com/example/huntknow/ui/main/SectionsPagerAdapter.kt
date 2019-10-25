@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.huntknow.R
-import com.example.huntknow.com.example.huntknow.models.Question
+import com.example.huntknow.models.Question
 
 private val TAB_TITLES = arrayOf(
     R.string.question_text_1,

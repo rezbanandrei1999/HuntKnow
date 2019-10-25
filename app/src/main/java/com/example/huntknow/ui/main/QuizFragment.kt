@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.huntknow.R
-import com.example.huntknow.com.example.huntknow.models.Common
-import com.example.huntknow.com.example.huntknow.models.Question
+import com.example.huntknow.models.Common
+import com.example.huntknow.models.Question
 import com.example.huntknow.GlobalVariables.Companion.right_answers
 
 /**
@@ -138,22 +138,6 @@ class QuizFragment : Fragment() {
         variantB.setEnabled(false)
         variantC.setEnabled(false)
         variantD.setEnabled(false)
-    }
-
-    fun resetQuestion(){
-
-        variantA.setEnabled(true)
-        variantA.setChecked(false)
-
-        variantB.setEnabled(true)
-        variantB.setChecked(false)
-
-        variantC.setEnabled(true)
-        variantC.setChecked(false)
-
-        variantD.setEnabled(true)
-        variantD.setChecked(false)
-
     }
 
     companion object {

@@ -18,9 +18,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.example.huntknow.GlobalVariables.Companion.qrList
-import com.example.huntknow.com.example.huntknow.models.QrCode
+import com.example.huntknow.models.QrCode
 import com.google.firebase.database.DatabaseError
-import com.google.zxing.qrcode.encoder.QRCode
 
 
 class MainActivity : AppCompatActivity() {
@@ -59,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 val userId = user.uid
                 val mRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
                 val qRef = FirebaseDatabase.getInstance().getReference("qr_codes")
-                qRef.addValueEventListener(object : ValueEventListener {
+                qRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(p0: DataSnapshot) {
                         p0.children.mapNotNullTo(qrList) {
                             it.getValue<QrCode>(QrCode::class.java)
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                         val iterator = qrList.listIterator()
                         var aux: MutableList<QrCode> = mutableListOf()
                         for (qr in iterator)
-                            if (!qr.is_final)
+                            if (qr.is_final == "false")
                                 aux.add(qr)
                         qrList = aux
                         qrList.shuffle()

@@ -8,7 +8,7 @@ import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.Toast
 
-import com.example.huntknow.com.example.huntknow.models.Question
+import com.example.huntknow.models.Question
 import com.google.firebase.database.*
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
@@ -16,8 +16,8 @@ import com.example.huntknow.ui.main.SectionsPagerAdapter
 import java.util.concurrent.TimeUnit
 import com.example.huntknow.GlobalVariables.Companion.right_answers
 import com.example.huntknow.GlobalVariables.Companion.qrList
-import com.example.huntknow.com.example.huntknow.models.QrCode
-import com.example.huntknow.com.example.huntknow.models.User
+import com.example.huntknow.models.QrCode
+import com.example.huntknow.models.User
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -68,14 +68,14 @@ class QuizActivity : AppCompatActivity() {
         ref = FirebaseDatabase.getInstance().getReference("questions")
 
         val context = this
-        ref.addValueEventListener(object : ValueEventListener {
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.mapNotNullTo(quiz) {
                     it.getValue<Question>(Question::class.java)
                 }
 
                 val iterator = quiz.listIterator()
-                var aux: MutableList<Question> = mutableListOf()
+                val aux: MutableList<Question> = mutableListOf()
                 for (question in iterator)
                     if (question.qr_group == qrCode)
                         aux.add(question)
@@ -107,60 +107,93 @@ class QuizActivity : AppCompatActivity() {
         finishQuiz = findViewById(R.id.finish)
         finishQuiz.setOnClickListener{
 
+            timerForQuizActivity.cancel()
             val user = FirebaseAuth.getInstance().currentUser!!
 
             val userId = user.uid
             val mRef = FirebaseDatabase.getInstance().getReference("users")
             val childRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
-            var aux = 0
-            var isDone = false
-            mRef.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) { }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    for (i in p0.children)
-                        if (i.getValue<User>(User::class.java)!!.uid == userId)
-                            aux = i.getValue<User>(User::class.java)!!.visited_place
-
-                }
-            })
+            intent = Intent(context, HomeActivity::class.java)
             if(qrList.isEmpty())
             {
                 val qRef = FirebaseDatabase.getInstance().getReference("qr_codes")
-                qRef.addValueEventListener(object : ValueEventListener {
+                qRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(p0: DataSnapshot) {
                         p0.children.mapNotNullTo(qrList) {
                             it.getValue<QrCode>(QrCode::class.java)
                         }
 
                         val iterator = qrList.listIterator()
-                        var aux: MutableList<QrCode> = mutableListOf()
-                        for (qr in iterator)
-                            if (qr.is_final)
-                                aux.add(qr)
-                        qrList = aux
-                        isDone = true
+                        loop@ for (qr in iterator)
+                            if (qr.is_final == "true") {
+                                intent.putExtra("location", qr.place)
+                                childRef.child("qr_current").setValue(qr.qr_code)
+                                break@loop
+                            }
+                        mRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onCancelled(p0: DatabaseError) { }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                var userList : MutableList<User> = mutableListOf()
+                                p0.children.mapNotNullTo(userList) {
+                                    it.getValue<User>(User::class.java)
+                                }
+                                var iterator2 = userList.listIterator()
+                                var aux = 0
+                                loop@ for (user in iterator2)
+                                    if (user.uid == userId) {
+                                        aux = user.visited_places
+
+                                        childRef.child("visited_places").setValue(aux + 1)
+                                        childRef.child("uid").setValue(userId)
+                                        break@loop
+                                    }
+                            }
+                        })
+                        val time = ((10 - right_answers)*30*1000).toString()
+                        intent.putExtra("timeBlocked",time)
+                        intent.putExtra("done", "true")
+                        startActivity(intent)
+                        finish()
                     }
                     override fun onCancelled(p0: DatabaseError) {}
                 })
             }
-            childRef.child("qr_current").setValue(qrList.first().qr_code)
-            childRef.child("visited_places").setValue(aux + 1)
-            childRef.child("uid").setValue(userId)
 
-            val time = ((10 - right_answers)*30*1000).toString()
-            intent = Intent(this, HomeActivity::class.java)
-            intent.putExtra("timeBlocked",time)
-            intent.putExtra("location", qrList.first().place)
-            intent.putExtra("done", isDone)
-            qrList.remove(qrList.first())
-            startActivity(intent)
+            mRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) { }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var userList : MutableList<User> = mutableListOf()
+                    p0.children.mapNotNullTo(userList) {
+                        it.getValue<User>(User::class.java)
+                    }
+                    var iterator2 = userList.listIterator()
+                    var aux = 0
+                    loop@ for (user in iterator2)
+                        if (user.uid == userId) {
+                            aux = user.visited_places
+
+                            childRef.child("qr_current").setValue(qrList.first().qr_code)
+                            childRef.child("visited_places").setValue(aux + 1)
+                            childRef.child("uid").setValue(userId)
+                            val time = ((10 - right_answers)*30*1000).toString()
+                            intent.putExtra("timeBlocked",time)
+                            intent.putExtra("location", qrList.first().place)
+                            intent.putExtra("done", "false")
+                            qrList.remove(qrList.first())
+                            startActivity(intent)
+                            finish()
+                            break@loop
+                        }
+                }
+            })
         }
 
     }
 
     override fun onBackPressed() {
-        Toast.makeText(getApplicationContext(), "Finish the quiz first", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "Finish the quiz first", Toast.LENGTH_SHORT).show()
     }
 }
 

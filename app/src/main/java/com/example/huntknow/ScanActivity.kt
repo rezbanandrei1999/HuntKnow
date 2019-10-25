@@ -12,7 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.huntknow.com.example.huntknow.models.User
+import com.example.huntknow.models.User
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
@@ -26,7 +26,6 @@ class ScanActivity : AppCompatActivity() {
     private lateinit var scanResText: TextView
     private lateinit var qrDetector: BarcodeDetector
     private lateinit var cameraSource: CameraSource
-    private var index=0
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -36,43 +35,44 @@ class ScanActivity : AppCompatActivity() {
         scanResText = findViewById((R.id.qrResult))
         qrDetector = BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.QR_CODE).build()
 
-        if(!qrDetector.isOperational()){
+        if(!qrDetector.isOperational){
             this.finish()
         }
         fun goToQuizActivityWithResult(){
             intent = Intent(this, QuizActivity::class.java)
             intent.putExtra("qrResult",scanResText.text)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
+            this.finish()
         }
         qrDetector.setProcessor(object : Detector.Processor<Barcode> {
             override fun release() {
             }
 
             override fun receiveDetections(detections: Detector.Detections<Barcode>?) {
-                val barcodes = detections?.detectedItems
+                val barcodes = detections?.detectedItems?.valueAt(0)
 
-                if (barcodes!!.size() > 0) {
+                if (barcodes?.displayValue != null) {
                     scanResText.post {
-                        scanResText.text = barcodes.valueAt(0).displayValue
-                        index+=1
+                        scanResText.text = barcodes.displayValue
 
-                        if(scanResText.text!=null && index==1) {
+                        if(scanResText.text!=null) {
                             var userList : MutableList<User> = mutableListOf()
-                            var ref: DatabaseReference =
-                                FirebaseDatabase.getInstance().getReference("users")
-                            ref.addValueEventListener(object :ValueEventListener{
-                                override fun onCancelled(p0: DatabaseError) {
 
-                                }
+                            var ref: DatabaseReference = FirebaseDatabase.getInstance().getReference("users")
+                            ref.addListenerForSingleValueEvent(object :ValueEventListener{
+                                override fun onCancelled(p0: DatabaseError) {}
 
                                 override fun onDataChange(p0: DataSnapshot) {
                                     p0.children.mapNotNullTo(userList) {
                                         it.getValue<User>(User::class.java)
                                     }
-                                    var currentUser =FirebaseAuth.getInstance().currentUser!!.getUid()
-                                    var currQr = userList.single{user -> user.uid== currentUser}.qr_current
-                                    if(currQr==scanResText.text)
+                                    val currentUser =FirebaseAuth.getInstance().currentUser!!.uid
+                                    val currQr = userList.first{user -> user.uid== currentUser}.qr_current
+                                    if(currQr==scanResText.text) {
                                         goToQuizActivityWithResult()
+                                        return
+                                    }
                                     else
                                         Toast.makeText(context, "Incorrect QR", Toast.LENGTH_LONG).show()
                                 }
@@ -80,10 +80,10 @@ class ScanActivity : AppCompatActivity() {
                         }
                     }
                 }
+                return
             }
 
         })
-
 
         cameraSource = CameraSource.Builder(this, qrDetector)
             .setRequestedPreviewSize(2340, 1080)

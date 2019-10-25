@@ -1,4 +1,4 @@
-package com.example.huntknow.com.example.huntknow.models
+package com.example.huntknow.models
 
 import java.util.*
 

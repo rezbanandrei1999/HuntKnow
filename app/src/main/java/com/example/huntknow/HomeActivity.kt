@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 import com.example.huntknow.GlobalVariables.Companion.right_answers
+import kotlinx.android.synthetic.main.fragment_quiz.*
 import java.util.concurrent.TimeUnit
 
 class HomeActivity : AppCompatActivity() {
@@ -30,12 +31,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-
-
         val goToQRScan: Button = findViewById(R.id.open_scan)
         val newLocation: TextView = findViewById(R.id.newLocation)
         newLocation.isVisible = false
-        val timeBlocked: String?
+        var timeBlocked: String?
         val nextLocation: String?
         val isFinished: String?
         if (savedInstanceState == null) {
@@ -52,34 +51,34 @@ class HomeActivity : AppCompatActivity() {
         } else {
             timeBlocked = savedInstanceState.getSerializable("timeBlocked") as String
             nextLocation = savedInstanceState.getSerializable("location") as String
-            isFinished = savedInstanceState.getSerializable("location") as String
+            isFinished = savedInstanceState.getSerializable("done") as String
         }
 
         if(timeBlocked != null) {
-        var time : Int = timeBlocked.toInt()
-        val timeForScanActivity = object: CountDownTimer(time.toLong(), 1000){
-            override fun onFinish() {
-                goToQRScan.text = "Scan QR"
-                goToQRScan.isEnabled = true
-                newLocation.isVisible = true
-                    newLocation.text = String.format("Next Location: %s",nextLocation)
-            }
+            if(isFinished == "true")
+                timeBlocked = "0"
+            var time : Int = timeBlocked.toInt()
+            val timeForScanActivity = object: CountDownTimer(time.toLong(), 1000){
+                override fun onFinish() {
+                    goToQRScan.text = "Scan QR"
+                    goToQRScan.isEnabled = true
+                    newLocation.isVisible = true
+                    if(isFinished == "false")
+                        newLocation.text = String.format("Next Location: %s",nextLocation)
+                    else
+                        newLocation.text = String.format("You finished the hunt!")
+                }
 
-            override fun onTick(millisUntilFinished: Long) {
-                goToQRScan.text = (String.format("%02d:%02d",
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))))
-                time -=1000
+                override fun onTick(millisUntilFinished: Long) {
+                    goToQRScan.text = (String.format("%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))))
+                    time -=1000
+                }
             }
-        }
-        goToQRScan.isEnabled = false
-        if(isFinished == "false")
+            goToQRScan.isEnabled = false
             timeForScanActivity.start()
-        else {
-            newLocation.isVisible = true
-            newLocation.text = String.format("You finished the hunt!")
-        }
         }
 
 
@@ -87,6 +86,7 @@ class HomeActivity : AppCompatActivity() {
             right_answers = 0
             val intent = Intent(this, ScanActivity::class.java)
             startActivity(intent)
+            finish()
         }
         val openLeaderboard: Button = findViewById(R.id.open_leaderboard)
         openLeaderboard.setOnClickListener {
