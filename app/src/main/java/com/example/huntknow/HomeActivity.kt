@@ -5,22 +5,22 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 import com.example.huntknow.GlobalVariables.Companion.right_answers
-import kotlinx.android.synthetic.main.fragment_quiz.*
 import java.util.concurrent.TimeUnit
 
 class HomeActivity : AppCompatActivity() {
     private fun signOut() {
         val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(intent)
-        FirebaseAuth.getInstance().signOut();
+        FirebaseAuth.getInstance().signOut()
     }
     private fun setupUI() {
         open_sign_out.setOnClickListener {
@@ -55,8 +55,11 @@ class HomeActivity : AppCompatActivity() {
         }
 
         if(timeBlocked != null) {
-            if(isFinished == "true")
+            if(isFinished == "true") {
                 timeBlocked = "0"
+                goToQRScan.isVisible = false
+                newLocation.isVisible = false
+            }
             var time : Int = timeBlocked.toInt()
             val timeForScanActivity = object: CountDownTimer(time.toLong(), 1000){
                 override fun onFinish() {
@@ -85,19 +88,22 @@ class HomeActivity : AppCompatActivity() {
         goToQRScan.setOnClickListener {
             right_answers = 0
             val intent = Intent(this, ScanActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
-            finish()
         }
         val openLeaderboard: Button = findViewById(R.id.open_leaderboard)
         openLeaderboard.setOnClickListener {
             val intent = Intent(this, LeaderboardActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
 
         }
         val openLocation: Button = findViewById(R.id.open_location)
         openLocation.setOnClickListener {
-            val intent = Intent(this, LocationActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this, LocationActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//            startActivity(intent)
+            Toast.makeText(this, "Coming Soon! :)", Toast.LENGTH_LONG).show()
         }
 
         setupUI()

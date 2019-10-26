@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.example.huntknow.GlobalVariables.Companion.qrList
+import com.example.huntknow.GlobalVariables.Companion.total_answers
 import com.example.huntknow.models.QrCode
 import com.google.firebase.database.DatabaseError
 
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var teamName: EditText
 
     private fun configureGoogleSignIn() {
         mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -58,28 +61,34 @@ class MainActivity : AppCompatActivity() {
                 val userId = user.uid
                 val mRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
                 val qRef = FirebaseDatabase.getInstance().getReference("qr_codes")
-                qRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                qRef.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(p0: DataSnapshot) {
-                        p0.children.mapNotNullTo(qrList) {
-                            it.getValue<QrCode>(QrCode::class.java)
+                        p0.children.mapNotNullTo(qrList) { dataSnapshot ->
+                            dataSnapshot.getValue<QrCode>(QrCode::class.java)
                         }
 
                         val iterator = qrList.listIterator()
-                        var aux: MutableList<QrCode> = mutableListOf()
-                        for (qr in iterator)
-                            if (qr.is_final == "false")
-                                aux.add(qr)
-                        qrList = aux
+                        loop@for (qr in iterator) {
+                            if (qr.qr_code == "complex") {
+                                qrList.remove(qr)
+                                break@loop
+                            }
+                        }
                         qrList.shuffle()
                     }
                     override fun onCancelled(p0: DatabaseError) {}
                 })
-
+                teamName = findViewById(R.id.teamName)
                 mRef.child("qr_current").setValue("abcd")
                 mRef.child("visited_places").setValue(0)
+                mRef.child("total_answers").setValue(0)
+                total_answers = 0
+                qrList.clear()
                 mRef.child("uid").setValue(userId)
+                mRef.child("team_name").setValue(teamName.text.toString())
 
                 val intent = Intent(this, HomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()
@@ -113,6 +122,7 @@ class MainActivity : AppCompatActivity() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             val intent = Intent(this, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             finish()
         }

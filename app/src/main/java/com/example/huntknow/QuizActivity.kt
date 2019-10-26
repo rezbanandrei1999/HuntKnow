@@ -16,9 +16,11 @@ import com.example.huntknow.ui.main.SectionsPagerAdapter
 import java.util.concurrent.TimeUnit
 import com.example.huntknow.GlobalVariables.Companion.right_answers
 import com.example.huntknow.GlobalVariables.Companion.qrList
+import com.example.huntknow.GlobalVariables.Companion.total_answers
 import com.example.huntknow.models.QrCode
 import com.example.huntknow.models.User
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_scan.*
 
 
 class QuizActivity : AppCompatActivity() {
@@ -36,7 +38,9 @@ class QuizActivity : AppCompatActivity() {
             val time = (10 - right_answers)*30*1000
             intent = Intent(context, HomeActivity::class.java)
             intent.putExtra("timeBlocked",time.toString())
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
+            finish()
         }
 
         override fun onTick(millisUntilFinished: Long) {
@@ -113,6 +117,16 @@ class QuizActivity : AppCompatActivity() {
             val userId = user.uid
             val mRef = FirebaseDatabase.getInstance().getReference("users")
             val childRef = FirebaseDatabase.getInstance().getReference("users").child(userId)
+            total_answers += right_answers
+            childRef.child("total_answers").setValue(total_answers)
+
+            if(qrCode == "complex") {
+                val intentaux = Intent(context, WinActivity::class.java)
+                intentaux.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                startActivity(intentaux)
+                finish()
+                return@setOnClickListener
+            }
             intent = Intent(context, HomeActivity::class.java)
             if(qrList.isEmpty())
             {
@@ -124,12 +138,14 @@ class QuizActivity : AppCompatActivity() {
                         }
 
                         val iterator = qrList.listIterator()
-                        loop@ for (qr in iterator)
-                            if (qr.is_final == "true") {
+                        var aux = mutableListOf<QrCode>()
+                        for (qr in iterator)
+                            if (qr.qr_code == "complex") {
                                 intent.putExtra("location", qr.place)
                                 childRef.child("qr_current").setValue(qr.qr_code)
-                                break@loop
+                                aux.add(qr)
                             }
+                        qrList = aux
                         mRef.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onCancelled(p0: DatabaseError) { }
 
@@ -150,9 +166,7 @@ class QuizActivity : AppCompatActivity() {
                                     }
                             }
                         })
-                        val time = ((10 - right_answers)*30*1000).toString()
-                        intent.putExtra("timeBlocked",time)
-                        intent.putExtra("done", "true")
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                         startActivity(intent)
                         finish()
                     }
@@ -173,15 +187,16 @@ class QuizActivity : AppCompatActivity() {
                     loop@ for (user in iterator2)
                         if (user.uid == userId) {
                             aux = user.visited_places
-
-                            childRef.child("qr_current").setValue(qrList.first().qr_code)
+                            var nextPlace = qrList.first()
+                            childRef.child("qr_current").setValue(nextPlace.qr_code)
                             childRef.child("visited_places").setValue(aux + 1)
                             childRef.child("uid").setValue(userId)
                             val time = ((10 - right_answers)*30*1000).toString()
                             intent.putExtra("timeBlocked",time)
-                            intent.putExtra("location", qrList.first().place)
+                            intent.putExtra("location", nextPlace.place)
                             intent.putExtra("done", "false")
-                            qrList.remove(qrList.first())
+                            qrList.remove(nextPlace)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                             startActivity(intent)
                             finish()
                             break@loop

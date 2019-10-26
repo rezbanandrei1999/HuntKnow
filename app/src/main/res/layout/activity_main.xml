@@ -16,5 +16,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/teamName"/>
+
+    <EditText
+        android:id="@+id/teamName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Enter Your Team Name"
+        tools:layout_editor_absoluteX="108dp"
+        tools:layout_editor_absoluteY="175dp"
+        android:textColor="@color/FontColor"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="200dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/google_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

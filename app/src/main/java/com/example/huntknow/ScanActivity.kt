@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.huntknow.GlobalVariables.Companion.qrList
 import com.example.huntknow.models.User
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
@@ -26,6 +27,7 @@ class ScanActivity : AppCompatActivity() {
     private lateinit var scanResText: TextView
     private lateinit var qrDetector: BarcodeDetector
     private lateinit var cameraSource: CameraSource
+    var context = this
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -40,7 +42,7 @@ class ScanActivity : AppCompatActivity() {
         }
         fun goToQuizActivityWithResult(){
             intent = Intent(this, QuizActivity::class.java)
-            intent.putExtra("qrResult",scanResText.text)
+            intent.putExtra("qrResult",scanResText.text.toString())
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             this.finish()
@@ -73,8 +75,12 @@ class ScanActivity : AppCompatActivity() {
                                         goToQuizActivityWithResult()
                                         return
                                     }
-                                    else
+                                    else {
                                         Toast.makeText(context, "Incorrect QR", Toast.LENGTH_LONG).show()
+                                        val intent = Intent(context, HomeActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                        startActivity(intent)
+                                    }
                                 }
                             })
                         }
